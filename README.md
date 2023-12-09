@@ -23,6 +23,11 @@ $ pyenv local; python -V
 Python 3.11.4
 ```
 ---
+## poetryでpython指定環境を使用できるようにする
+```
+ENV_PYTHON=$(pyenv which python)
+poetry env use ${ENV_PYTHON}
+```
 
 ## poetry初期設定
 対話式で導入
