@@ -158,3 +158,14 @@ requests = "^2.31.0"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 ```
+---
+## まとめてインストール
+`pyproject.toml`に定義を書きます
+```
+[tool.poetry.dependencies]
+python = "3.11.4"
+requests = "^2.31.0"
+numpy = "^1.26.2"
+pandas = "^2.1.4"
+pydantic = "^2.5.2"
+```
