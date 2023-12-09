@@ -12,13 +12,16 @@ pyenv install 3.11.x
 globalはシステム全体で使うバージョンを変えたいときに使用。localはプロジェクトごとで違うバージョンを使いたいときに使用。
 ```
 mkdir sandbox1; cd $_
+
+# なければ作る↓
 cat .python-version
 3.11.4
+
 pyenv local or pyenv global
 ```
 
 ```
-$ pyenv local; python -V
+pyenv local; python -V
 3.11.4
 Python 3.11.4
 ```
@@ -31,9 +34,10 @@ poetry env use ${ENV_PYTHON}
 
 ## poetry初期設定
 対話式で導入
-pythonのバージョンはpyenvで設定したものを示すこと
+- pythonのバージョンはpyenvで設定したものを示すこと
+- git cloneからpoetry init済の資源を取れる状態であるならば改めての実行は不要
 ```
-petory init
+poetry init
 ```
 ## poetoryでインストール
 ```
@@ -159,7 +163,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 ```
 ---
-## まとめてインストール
+## まとめてパッケージをインストール
 `pyproject.toml`に定義を書きます
 ```
 [tool.poetry.dependencies]
@@ -168,4 +172,8 @@ requests = "^2.31.0"
 numpy = "^1.26.2"
 pandas = "^2.1.4"
 pydantic = "^2.5.2"
+```
+その後はいつもどおり
+```
+poetry install
 ```
