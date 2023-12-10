@@ -1,0 +1,28 @@
+########################################
+# hostname
+########################################
+[hostname]
+HOSTNAME_DEVELOP = ''
+HOSTNAME_REGRESSION ='
+HOSTNAME_PRODUCTION ='
+
+########################################
+# exec_env
+########################################
+[exec_env]
+HOSTNAME_PRODUCTION = 'production'
+HOSTNAME_REGRESSION = 'regression'
+
+########################################
+# logger
+########################################
+[logger_path]
+
+########################################
+# inputp/output data path
+########################################
+[input_file_path]
+UPDATE_EXCEL_PATH = 'share/receive'
+
+[output_file_path]
+SEND_REFERENCE_MASTER_PATH = 'share/send'

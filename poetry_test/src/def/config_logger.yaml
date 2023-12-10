@@ -1,0 +1,21 @@
+version: 1
+formatters:
+  testFormatter:
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    datefmt: '%Y/%m/%d %I:%M:%S'
+handlers:
+  file:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: testFormatter
+    filename: ./test.log
+    maxBytes: 100000
+    backupCount: 5
+loggers:
+  testLogger:
+    level: INFO
+    handlers: [file]
+    propagate: no
+root:
+  level: INFO
+  handlers: []
