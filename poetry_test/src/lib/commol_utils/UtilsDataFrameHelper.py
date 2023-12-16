@@ -1,43 +1,36 @@
 # library
-import pandas as pd
-import sys
-
-from datetime import datetime
-from datetime import date
-from datetime import time
-from datetime import timedelta
-
-from pathlib import Path
 from typing import Optional
 
-def calc_timedelta_to_totalseconds(col_start: pd.Series, col_end: pd.Series) -> Optional[pd.Series]:
+import pandas as pd
+
+
+def calc_timedelta_to_totalseconds(col_start: pd.Series, col_end: pd.Series) -> pd.Series:
     """2つのdatetime型のSeries感の差分時間を秒を返す
 
     Args:
+    ----
         col_start (pd.Series[datetime]): 評価開始時間
         col_end (pd.Series[datetime]): 評価終了時間
 
     Returns:
+    -------
         pd.Series: 差分時間を秒で返す
     """
-    try:
-        _timedelta: timedelta = col_end - col_start
-        #return _timedelta.totalseconds()
-        return _timedelta.seconds
-    except Exception as e:
-        print(f"{e}: 例外が発生しました")
-        return None
+    _timedelta = col_end - col_start
+    return _timedelta.seconds
 
 
 def add_staticvalue_to_dataframe(df: pd.DataFrame, add_col_name: str, static_value) -> pd.DataFrame:
     """指定した列に固定値を一律設定する
 
     Args:
+    ----
         df (pd.DataFrame): 処理対象DataFrame
         add_col_name (str): DataFrameに追加するcol名
         static_value (_type_): DataFrameに追加するcolに設定する固定値
 
     Returns:
+    -------
         pd.DataFrame: _description_
     """
     if not isinstance(df, pd.DataFrame):
@@ -60,9 +53,11 @@ def do_excel_eda(df:pd.DataFrame) -> Optional[pd.DataFrame]:
     """Excelから取り込んだDataFrameからよくある困った文字列を取り除く
 
     Args:
+    ----
         df (pd.DataFrame):処理対象のDataFrame
 
     Returns:
+    -------
         pd.DataFrame: EDA処置済のDataFrame
     """
     if not isinstance(df, pd.DataFrame):
@@ -87,9 +82,11 @@ def create_markdowntable_from_dataframe(df: pd.DataFrame) -> str:
     項目は全て文字列に変換する
 
     Args:
+    ----
         df (pd.DataFrame): 変換対象のDataFrame
 
     Returns:
+    -------
         str: 変換後のMarkdown構成Table
     """
     if not isinstance(df, pd.DataFrame):

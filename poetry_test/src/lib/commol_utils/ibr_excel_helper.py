@@ -26,44 +26,46 @@ class ExcelDataLoader:
         self.use_cols = use_cols
         self.exclusionSheets = exclusion_sheets
 
-def read_excel_data_one_sheet(self) -> pd.DataFrame|None: # noqa: ANN001
-    """対象のExcelBookに対し指定した1シートをDataFrameに取り込む
+    def read_excel_one_sheet(self) -> pd.DataFrame|None:  # noqa: ANN101
+        """対象のExcelBookに対し指定した1シートをDataFrameに取り込む
 
-    各種パラメターによりチューニングしたDataFrameの状態にある。
-    ヘダースキップして最初の行をcolumnsとして取り込む。
+        各種パラメターによりチューニングしたDataFrameの状態にある。
+        ヘダースキップして最初の行をcolumnsとして取り込む。
 
-    Raises
-    ------
-        ValueError: 全包囲で例外を拾った結果、ValueErrorを返す
+        Raises
+        ------
+            ValueError: 全包囲で例外を拾った結果、ValueErrorを返す
 
-    Returns
-    -------
-        pd.DataFrame|None: Excelシートを取り込んだDataFrame
+        Returns
+        -------
+            pd.DataFrame|None: Excelシートを取り込んだDataFrame
 
-    """
-    try:
-        with pd.ExcelFile(self.file_path) as target_excel:
-            # 指定PathでExcelBookがない場合は空のDataFrameを返す
-            if self.sheet_name not in target_excel.sheet_names:
-                return pd.DataFrame()
+        """
+        try:
+            with pd.ExcelFile(self.file_path) as target_excel:
+                # 指定PathでExcelBookがない場合は空のDataFrameを返す
+                if self.sheet_name not in target_excel.sheet_names:
+                    return pd.DataFrame()
 
-            return target_excel.parse(
-                sheet_name=self.sheet_name,
-                index_col=False,
-                na_values="",
-                header=0,
-                skiprows=self.skip_rows,
-                usecols=self.use_cols,
-            )
-    except FileNotFoundError:
-        raise ValueError(f"指定されたファイルが見つかりませんでした: {self.file_path}")
-    except ValueError as e:
-        raise ValueError(f"Excelファイルの読み込みに失敗しました: {e}") from e
-    except Exception as e:  # noqa: BLE001を許容(pd.read_excel()は様々な例外が発生するため)
-        raise ValueError(f"予期しないエラーが発生しました: {e}") from e
+                return target_excel.parse(
+                    sheet_name=self.sheet_name,
+                    index_col=False,
+                    na_values="",
+                    header=0,
+                    skiprows=self.skip_rows,
+                    usecols=self.use_cols,
+                )
+        except FileNotFoundError:
+            raise ValueError(f"指定されたファイルが見つかりませんでした: {self.file_path}")
+        except ValueError as e:
+            raise ValueError(f"Excelファイルの読み込みに失敗しました: {e}") from e
+        except Exception as e:  # noqa: BLE001を許容(pd.read_excel()は様々な例外が発生するため)
+            raise RuntimeError(f"予期しないエラーが発生しました: {e}") from e
+        finally:
+            target_excel.close()
 
 
-    def read_excel_data_all_sheets(self) -> pd.DataFrame|None:  # noqa: ANN001,ARG001
+    def read_excel_all_sheets(self) -> pd.DataFrame|None:    # noqa: ANN101
         """対象のExcelBookに対し取り込まないと指定したシート以外を全てDataFrameに取り込む
 
         シートは全て同一フォーマットである必要がある。
@@ -79,21 +81,27 @@ def read_excel_data_one_sheet(self) -> pd.DataFrame|None: # noqa: ANN001
         -------
             pd.DataFrame|None: 条件を満たす全てのExcelSheetを取り込んだDataFrame
         """
+        try:
+            with pd.ExcelFile(self.file_path) as target_excel:
+                # 処理対象シートのみDataFrame生成
+                all_sheets = {sheet: target_excel.parse(sheet) for sheet in target_excel.sheet_names if sheet not in self.exclusionSheets}
+        except FileNotFoundError as e:
+            raise ValueError(f"can not get target files {e}") from e
+        except Exception as e:  # noqa: BLE001を許容(pd.read_excel()は様々な例外が発生するため)
+            raise RuntimeError(f"予期しないエラーが発生しました: {e}") from e
+        finally:
+            target_excel.close()
 
-    try:
-        with pd.ExcelFile(self.file_path) as target_excel:
-            all_sheets = {sheet: target_excel.parse(sheet) for sheet in target_excel.sheet_names}
-    except FileNotFoundError as e:
-        raise ValueError(f"can not get target files {e}")
+        try:
+            df_cum_excel = pd.concat(
+                [
+                    all_sheets[worksheet]
+                    for worksheet in all_sheets
+                ],
+            )
+        except Exception as e:  # noqa: BLE001を許容(pd.read_excel()は様々な例外が発生するため)
+            raise RuntimeError(f"ExcelSheet読み込み処理に失敗しました: {e}") from e
+        finally:
+            pass
 
-    try:
-        df_cum_excel = pd.concat(
-            [
-                all_sheets[worksheet]
-                for worksheet in all_sheets if worksheet not in self.exclusion_sheets
-            ],
-        )
-    except Exception as e:  # noqa: BLE001を許容(pd.read_excel()は様々な例外が発生するため)
-        raise RuntimeError(f"ExcelSheet読み込み処理に失敗しました: {e}") from e
-
-    return df_cum_excel.reset_index(drop=True)
+        return df_cum_excel.reset_index(drop=True)
