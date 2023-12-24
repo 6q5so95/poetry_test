@@ -1,23 +1,18 @@
 # library
 import csv
 import inspect
-import os
-import pandas as pd
-import pytest
-import re
-import shutil
-import sys
-
-from pathlib import Path
-from pprint import pprint
-from tabulate import tabulate as tb
-from typing import Any
-from typing import List
-from typing import Optional
 
 # logger
 import logging
 import logging.config
+import re
+import sys
+from pathlib import Path
+from typing import Any, Optional
+
+import pandas as pd
+import pytest
+from tabulate import tabulate as tb
 
 #######################################################
 # テスト対象ライブラリパス追加/ロード
@@ -25,8 +20,7 @@ import logging.config
 TARGET_PREFIX = Path(__file__).parent.parent.parent / 'src'
 TARGET_PREFIX_LIB = TARGET_PREFIX / 'lib'
 sys.path.append(str(TARGET_PREFIX_LIB))
-from UtilsCSVReader import import_csv_to_row
-from UtilsCSVReader import import_csv_to_dataframe
+from UtilsCSVReader import import_csv_to_dataframe, import_csv_to_row
 
 ############################################
 # 実行環境PREFIX 生成
@@ -49,19 +43,21 @@ logger = logging.getLogger(__name__)
 ############################################
 def create_csv_file(
     file_path: Path,
-    data: List[List[Any]],
+    data: list[list[Any]],
     delimiter=",",
-    quoting=csv.QUOTE_NONE
+    quoting=csv.QUOTE_NONE,
     )-> bool:
     """指定した出力先にlist定義したデータを出力する
 
     Args:
+    ----
         file_path (Path): 出力先ファイルフルパス
         data (list):  出力データ、list定義
         delimiter (str, optional): データ区切り文字指定, デフォルトはカンマ区切り
         quoting (_type_, optional): 出力データQuote定義、デフォルトはcsv.QUOTE_NONE
 
     Returns:
+    -------
         True: ファイル作成成功
         False: ファイル作成失敗
     """
@@ -117,20 +113,20 @@ def csv_resource_001(csv_data_001: list)-> Optional[Path]:
     outfile = PREFIX_TMP / 'test_UtilsCSVReader_temp_N001.csv'
     if create_csv_file(outfile, csv_data_001):
         # setup
-        logger.info(f"setup")
+        logger.info("setup")
 
         # Exectute Test
         yield outfile
 
         # tear_down
-        logger.info(f"tear down")
+        logger.info("tear down")
         if outfile.exists():
             outfile.parent.chmod(0o755)
             outfile.chmod(0o755)
             logger.info(f"shutil.rmtree: {outfile.parent}")
             #shutil.rmtree(f"{outfile.parent}")
     else:
-        print(f"テスト実行に失敗しています")
+        print("テスト実行に失敗しています")
         print(f"Test Datapath: {outfile}")
         return None
 
@@ -145,13 +141,13 @@ def csv_resource_002()-> Optional[Path]:
         f.write('bbbbbb|20|21\n')
         f.write('cccccc|30|31\n')
     # setup
-    logger.info(f"setup")
+    logger.info("setup")
 
     # Exectute Test
     yield outfile
 
     # tear_down
-    logger.info(f"tear down")
+    logger.info("tear down")
     if outfile.exists():
         outfile.parent.chmod(0o755)
         outfile.chmod(0o755)
@@ -166,13 +162,13 @@ def csv_resource_003()-> Optional[Path]:
     with open(outfile, 'w') as f:
         f.write('')
     # setup
-    logger.info(f"setup")
+    logger.info("setup")
 
     # Exectute Test
     yield outfile
 
     # tear_down
-    logger.info(f"tear down")
+    logger.info("tear down")
     if outfile.exists():
         outfile.parent.chmod(0o755)
         outfile.chmod(0o755)
@@ -186,20 +182,20 @@ def csv_resource_004(csv_data_002: list)-> Optional[Path]:
     outfile = PREFIX_TMP / 'test_UtilsCSVReader_temp_N004.csv'
     if create_csv_file(outfile, csv_data_002):
         # setup
-        logger.info(f"setup")
+        logger.info("setup")
 
         # Exectute Test
         yield outfile
 
         # tear_down
-        logger.info(f"tear down")
+        logger.info("tear down")
         if outfile.exists():
             outfile.parent.chmod(0o755)
             outfile.chmod(0o755)
             logger.info(f"shutil.rmtree: {outfile.parent}")
             #shutil.rmtree(f"{outfile.parent}")
     else:
-        print(f"テスト実行に失敗しています")
+        print("テスト実行に失敗しています")
         print(f"Test Datapath: {outfile}")
         return None
 
@@ -210,20 +206,20 @@ def csv_resource_005(csv_data_003: list)-> Optional[Path]:
     outfile = PREFIX_TMP / 'test_UtilsCSVReader_temp_N005.csv'
     if create_csv_file(outfile, csv_data_003):
         # setup
-        logger.info(f"setup")
+        logger.info("setup")
 
         # Exectute Test
         yield outfile
 
         # tear_down
-        logger.info(f"tear down")
+        logger.info("tear down")
         if outfile.exists():
             outfile.parent.chmod(0o755)
             outfile.chmod(0o755)
             logger.info(f"shutil.rmtree: {outfile.parent}")
             #shutil.rmtree(f"{outfile.parent}")
     else:
-        print(f"テスト実行に失敗しています")
+        print("テスト実行に失敗しています")
         print(f"Test Datapath: {outfile}")
         return None
 
@@ -238,13 +234,13 @@ def csv_resource_006()-> Optional[Path]:
         f.write('bbbbbb,20,21\n')
         f.write('cccccc,30,31\n')
     # setup
-    logger.info(f"setup")
+    logger.info("setup")
 
     # Exectute Test
     yield outfile
 
     # tear_down
-    logger.info(f"tear down")
+    logger.info("tear down")
     if outfile.exists():
         outfile.parent.chmod(0o755)
         outfile.chmod(0o755)
@@ -262,13 +258,13 @@ def csv_resource_007()-> Optional[Path]:
         f.write('bbbbbb\t20\t21\n')
         f.write('cccccc\t30\t31\n')
     # setup
-    logger.info(f"setup")
+    logger.info("setup")
 
     # Exectute Test
     yield outfile
 
     # tear_down
-    logger.info(f"tear down")
+    logger.info("tear down")
     if outfile.exists():
         outfile.parent.chmod(0o755)
         outfile.chmod(0o755)
@@ -286,13 +282,13 @@ def csv_resource_008()-> Optional[Path]:
         f.write('bbbbbb 20 21\n')
         f.write('cccccc 30 31\n')
     # setup
-    logger.info(f"setup")
+    logger.info("setup")
 
     # Exectute Test
     yield outfile
 
     # tear_down
-    logger.info(f"tear down")
+    logger.info("tear down")
     if outfile.exists():
         outfile.parent.chmod(0o755)
         outfile.chmod(0o755)
@@ -306,20 +302,20 @@ def csv_resource_009(csv_data_004: list)-> Optional[Path]:
     outfile = PREFIX_TMP / 'test_UtilsCSVReader_temp_N009.csv'
     if create_csv_file(outfile, csv_data_004):
         # setup
-        logger.info(f"setup")
+        logger.info("setup")
 
         # Exectute Test
         yield outfile
 
         # tear_down
-        logger.info(f"tear down")
+        logger.info("tear down")
         if outfile.exists():
             outfile.parent.chmod(0o755)
             outfile.chmod(0o755)
             logger.info(f"shutil.rmtree: {outfile.parent}")
             #shutil.rmtree(f"{outfile.parent}")
     else:
-        print(f"テスト実行に失敗しています")
+        print("テスト実行に失敗しています")
         print(f"Test Datapath: {outfile}")
         return None
 
@@ -358,9 +354,9 @@ class Test_import_csv_to_row:
             #- CSVファイルの中身が複数行ある場合 -> C0で検証済
             #- csvファイルの区切り文字がパイプの場合 -> C1で検証済
     """
+
     def test_C0_Normal_UT_import_csv_to_row_Normal_data_include_header(self, csv_resource_001):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C0
         - テスト区分: 正常系/UT
         - テストシナリオ: へダーありデータの取り込み
@@ -382,8 +378,7 @@ class Test_import_csv_to_row:
 
 
     def test_C0_Error_UT_path_is_not_Path_instance(self, csv_resource_001):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C0
         - テスト区分: 異常系/UT
         - テストシナリオ: Pathインスタンス以外を渡す,None戻り確認
@@ -402,8 +397,7 @@ class Test_import_csv_to_row:
 
 
     def test_C0_Error_UT_path_is_not_exists(self, csv_resource_001):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C0
         - テスト区分: 異常系/UT
         - テストシナリオ: 存在しない適当なPathObject指定,None戻り確認
@@ -422,8 +416,7 @@ class Test_import_csv_to_row:
 
 
     def test_C0_Error_UT_path_is_not_have_read_permission(self, csv_resource_001):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C0
         - テスト区分: 異常系/UT
         - テストシナリオ: 読み取り権限のないパス指定,None戻り確認 Path('/home/nxautomation')
@@ -443,8 +436,7 @@ class Test_import_csv_to_row:
 
 
     def test_C0_Error_UT_open_error_by_mock(self, mocker, csv_resource_001):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C0
         - テスト区分: 異常系/UT
         - テストシナリオ: データ操作処理のtry-catchでのexceptionをmockでシミュレート
@@ -466,8 +458,7 @@ class Test_import_csv_to_row:
 
 
     def test_C1_Error_UT_set_path_None(self, csv_resource_001):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C1
         - テスト区分: 異常系/UT
         - テストシナリオ: pathにNoneを指定する, Noneが返る
@@ -486,8 +477,7 @@ class Test_import_csv_to_row:
 
 
     def test_C1_Error_UT_set_delimiter_None(self, csv_resource_001):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C1
         - テスト区分: 異常系/UT
         - テストシナリオ: delimiterにNoneを指定する, delimiter must be string, Noneが返る
@@ -506,8 +496,7 @@ class Test_import_csv_to_row:
 
 
     def test_C1_Normal_UT_set_delimiter_to_pipe(self, csv_resource_002):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C1
         - テスト区分: 正常系/UT
         - テストシナリオ: delimiterに|を指定する
@@ -529,8 +518,7 @@ class Test_import_csv_to_row:
 
 
     def test_C2_Normal_UT_set_data_empty(self, csv_resource_003):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C2
         - テスト区分: 正常系/UT
         - テストシナリオ: 取り込みデータをゼロ件
@@ -549,8 +537,7 @@ class Test_import_csv_to_row:
 
 
     def test_C2_Normal_UT_set_data_only_header(self, csv_resource_004):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C2
         - テスト区分: 正常系/UT
         - テストシナリオ: 取り込みデータへダーのみ
@@ -569,8 +556,7 @@ class Test_import_csv_to_row:
 
 
     def test_C2_Normal_UT_set_data_only_detail(self, csv_resource_005):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C2
         - テスト区分: 正常系/UT
         - テストシナリオ: 取り込みデータ明細のみ
@@ -589,8 +575,7 @@ class Test_import_csv_to_row:
 
 
     def test_C2_Normal_UT_set_data_delimiter_to_commma(self, csv_resource_006):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C2
         - テスト区分: 正常系/UT
         - テストシナリオ: 取り込みデータカンマ区切り、delimiter指定
@@ -612,8 +597,7 @@ class Test_import_csv_to_row:
 
 
     def test_C2_Normal_UT_set_data_delimiter_to_tab(self, csv_resource_007):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C2
         - テスト区分: 正常系/UT
         - テストシナリオ: 取り込みデータTab区切り、delimiter指定
@@ -635,8 +619,7 @@ class Test_import_csv_to_row:
 
 
     def test_C2_Normal_UT_set_data_delimiter_to_space(self, csv_resource_008):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C2
         - テスト区分: 正常系/UT
         - テストシナリオ: 取り込みデータSpace区切り、delimiter指定
@@ -693,8 +676,7 @@ class Test_import_csv_to_dataframe:
     """
 
     def test_C0_Normal_UT_import_csv_to_row_Normal_data_include_header(self, csv_resource_001: Path):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C0
         - テスト区分: 正常系/UT
         - テストシナリオ: へダーありデータの取り込み
@@ -719,8 +701,7 @@ class Test_import_csv_to_dataframe:
 
 
     def test_C0_Error_UT_path_is_not_Path_instance(self, csv_resource_001):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C0
         - テスト区分: 異常系/UT
         - テストシナリオ: Pathインスタンス以外を渡す,None戻り確認
@@ -739,8 +720,7 @@ class Test_import_csv_to_dataframe:
 
 
     def test_C0_Error_UT_path_is_not_exists(self, csv_resource_001):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C0
         - テスト区分: 異常系/UT
         - テストシナリオ: 存在しない適当なPathObjectを指定,None戻り確認
@@ -759,8 +739,7 @@ class Test_import_csv_to_dataframe:
 
 
     def test_C0_Error_UT_path_is_not_have_read_permission(self, csv_resource_001):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C0
         - テスト区分: 異常系/UT
         - テストシナリオ: 読み取り権限のないパス指定,None戻り確認
@@ -780,8 +759,7 @@ class Test_import_csv_to_dataframe:
 
 
     def test_C0_Error_UT_open_error_by_mock(self, mocker, csv_resource_001):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C0
         - テスト区分: 異常系/UT
         - テストシナリオ: データ操作処理のtry-catchでのexceptionをmockでシミュレート
@@ -802,8 +780,7 @@ class Test_import_csv_to_dataframe:
 
 
     def test_C1_Error_UT_set_path_None(self, csv_resource_001):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C1
         - テスト区分: 異常系/UT
         - テストシナリオ: pathにNoneを指定する, Noneが返る
@@ -822,8 +799,7 @@ class Test_import_csv_to_dataframe:
 
 
     def test_C1_Normal_UT_set_skiprows_None(self, csv_resource_001):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C1
         - テスト区分: 正常系/UT
         - テストシナリオ: skiprowsにNoneを指定する, データ取り込み正常
@@ -848,8 +824,7 @@ class Test_import_csv_to_dataframe:
 
 
     def test_C1_Normal_UT_set_header_None(self, csv_resource_001):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C1
         - テスト区分: 正常系/UT
         - テストシナリオ: headerにNoneを指定する, データ取り込み正常
@@ -874,8 +849,7 @@ class Test_import_csv_to_dataframe:
 
 
     def test_C1_Normal_UT_set_usecols_None(self, csv_resource_001):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C1
         - テスト区分: 正常系/UT
         - テストシナリオ: usecolsにNoneを指定する, データ取り込み正常
@@ -900,8 +874,7 @@ class Test_import_csv_to_dataframe:
 
 
     def test_C2_Normal_UT_set_data_empty(self, csv_resource_003):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C2
         - テスト区分: 正常系/UT
         - テストシナリオ: 取り込みデータをゼロ件
@@ -919,8 +892,7 @@ class Test_import_csv_to_dataframe:
 
 
     def test_C2_Normal_UT_set_data_only_header(self, csv_resource_004):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C2
         - テスト区分: 正常系/UT
         - テストシナリオ: 取り込みデータへダーのみ
@@ -942,8 +914,7 @@ class Test_import_csv_to_dataframe:
 
 
     def test_C2_Normal_UT_set_data_only_detail(self, csv_resource_005):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C2
         - テスト区分: 正常系/UT
         - テストシナリオ: 取り込みデータ明細のみ １件
@@ -965,8 +936,7 @@ class Test_import_csv_to_dataframe:
 
 
     def test_C2_Normal_UT_set_data_some_detail(self, csv_resource_009):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C2
         - テスト区分: 正常系/UT
         - テストシナリオ: 取り込みデータ明細のみ １件
@@ -988,8 +958,7 @@ class Test_import_csv_to_dataframe:
 
 
     def test_C0_Normal_UT_import_csv_to_row_Normal_data_include_header_with_skiprows(self, csv_resource_001: Path):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C2
         - テスト区分: 正常系/UT
         - テストシナリオ: へダーありデータの取り込み, skiprows指定 skiprow=1のため結果Header行を飛ばす状況になる
@@ -1014,8 +983,7 @@ class Test_import_csv_to_dataframe:
 
 
     def test_C0_Error_UT_import_csv_to_row_Normal_data_include_header_with_skiprows_overvalue(self, csv_resource_001: Path):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C2
         - テスト区分: 正常系/UT
         - テストシナリオ: へダーありデータの取り込み, skiprows指定 skiprow=100のため結果はNone
@@ -1034,8 +1002,7 @@ class Test_import_csv_to_dataframe:
 
 
     def test_C0_Normal_UT_import_csv_to_row_Normal_data_include_header_with_usecols(self, csv_resource_001: Path):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C2
         - テスト区分: 正常系/UT
         - テストシナリオ: へダーありデータの取り込み, usecols指定 0列と2列を指定
@@ -1060,13 +1027,13 @@ class Test_import_csv_to_dataframe:
 
 
     def test_C0_Error_UT_import_csv_to_row_Normal_data_include_header_with_usecols_overvalue(self, csv_resource_001: Path):
-        """
-        テスト定義：
+        """テスト定義：
         - テストカテゴリ: C2
         - テスト区分: 異常系/UT
         - テストシナリオ: へダーありデータの取り込み, usecols指定,存在しない列番号指定, 空のDataFrameが返る
 
         Note:
+        ----
             test_UtilsCSVReader.py::Test_import_csv_to_dataframe::test_C0_Normal_UT_import_csv_to_row_Normal_data_include_header_with_usecols_overvalue
             /home/satoshi/git_area/pytest_first_kaggle/src/lib/UtilsCSVReader.py:94: FutureWarning: Defining usecols with out of bounds indices is deprecated and will raise a ParserError in a future version.
         """
