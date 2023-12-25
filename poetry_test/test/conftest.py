@@ -16,10 +16,11 @@ import pytest
 import logging
 
 @pytest.fixture(scope="function")
-def change_log_file():
+def change_log_file(request):
+    log_file = request.param
     logger = logging.getLogger("test_logger")
     old_handler = logger.handlers[0]
-    new_handler = logging.FileHandler("new.log")
+    new_handler = logging.FileHandler(log_file)
     logger.addHandler(new_handler)
     logger.removeHandler(old_handler)
     yield 
