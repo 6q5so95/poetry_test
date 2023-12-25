@@ -30,8 +30,9 @@ def test_func_main3(mocker):
     m1 = mocker.patch('os.getcwd', return_value='/var/app')
     m2 = mocker.patch('main.func_sample', return_value =1)
     m3 = mocker.patch('main.Sample.half_value', return_value=11)
-    m4 = mocker.patch('main.Sample.get_cvalue', return_value=31)
-    m5 = mocker.patch('main.Sample.get_svalue', return_value=41)
+    m4 = mocker.patch('main.Sample.half_value', return_value=21, new_callable=mocker.PropertyMock)
+    m5 = mocker.patch('main.Sample.get_cvalue', return_value=31)
+    m6 = mocker.patch('main.Sample.get_svalue', return_value=41)
 
     # 差し替えを確認 mocker.patch効果
     # Sampleでの設定との違いを確認!
@@ -95,6 +96,7 @@ def test_func_main8(mocker):
         main.func_sample()
     
     assert 'new exception' in str(e.value)
+
 
 
 
