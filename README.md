@@ -70,6 +70,11 @@ pydantic = "^2.5.2"
 poetry install
 ```
 
+### うまくいかない時
+```
+poetry env use 3.11.6
+```
+
 ---
 
 ### 追加でパッケージを追加する
