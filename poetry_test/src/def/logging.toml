@@ -1,0 +1,41 @@
+# ===== logging settings
+
+[loggers]
+root = "" 
+simpleExample = ""
+
+[handlers]
+logFileHandler = ""
+streamHandler = ""
+  
+[formatters]
+logFileFormatter = ""
+
+# ===== logger settings
+[logger.root]
+level = "DEBUG" 
+handlers = ["logFileHandler", "streamHandler"]
+
+#[logger.simpleExample]  
+#level = "DEBUG"
+#handlers = ["streamHandler"]
+#qualname = "simpleExample"
+#propagate = false
+
+# ファイル出力設定
+[handler.logFileHandler]
+class = "handlers.TimedRotatingFileHandler" 
+level = "INFO"
+formatter = "logFileFormatter" 
+args = ["../log/app.log", "D", 1, 10, "utf-8"]
+
+# コンソール出力設定
+[handler.streamHandler]
+class = "StreamHandler"
+level = "DEBUG"
+formatter = "logFileFormatter"
+args = ["sys.stdout"]
+
+# フォーマット設定 
+[formatter.logFileFormatter]  
+format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
